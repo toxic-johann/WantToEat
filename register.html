@@ -1,0 +1,19 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+　　<![endif]-->
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+   	<script type="text/javascript">
+			function toLogout(){
+				window.location.href='/logout'; 
+			}
+	</script>
+   <body>
+   <div>{{user_name}}<input type="button" value="logout" id='toLogout' onclick="toLogout();"></div>
+   </body>
+ </html>
