@@ -1,0 +1,60 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+　　<![endif]-->
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+   	<script type="text/javascript">
+			function toLogout(){
+				window.location.href='/logout'; 
+			}
+			function toPraise(obj){
+				var ada = {};
+				words = obj.attr("id").split("-");
+				ada['canteen']=words[0];
+				ada['dish']=words[1];
+				$.post("/praise",ada,function(data,status){
+				});
+				obj.attr("onclick","toDelete($(this));");
+				obj.html("取消");
+				$('#my-dish').append("<li id='"+words[0]+'-'+words[1]+"'><a href='/dish/"+words[1]+"'>"+words[1]+"</a>——<a href='canteen/"+words[0]+"'>"+words[0]+"</li>")
+			}
+			function toDelete(obj){
+				var ada = {};
+				words = obj.attr("id").split("-");
+				ada['canteen']=words[0];
+				ada['dish']=words[1];
+				$.post("/delete-praise",ada,function(data,status){
+				});
+				obj.attr("onclick","toPraise($(this));");
+				obj.html("赞");
+				$("#my-dish #"+words[0]+'-'+words[1]).remove()
+			}
+	</script>
+   <body>
+   <div>{{user_name}}<input type="button" value="logout" id='toLogout' onclick="toLogout();"></div>
+   <div>
+   	<a href="canteen/{{Canteen}}" >{{Canteen}}</a>
+   	<br>{{Canteen_info['description']}}
+   	<ul id="canteen-dish">
+   		{% for dish in Canteen_dishes %}
+   		<li id="{{Canteen}}{{dish['name']}}"><a href="/dish/{{Canteen}}/{{dish['name']}}">{{dish['name']}}</a>——<a href="/canteen/{{Canteen}}">{{Canteen}}</a>
+   			{% if Is_canteen_dishes_praise[dish['name']] == 'True' %}
+   		<span id="{{Canteen}}-{{dish['name']}}" onclick="toDelete($(this));">取消</span>
+   		{% else %}
+   		<span id="{{Canteen}}-{{dish['name']}}" onclick="toPraise($(this));">赞</span>
+   		{% end %}
+   		</li>	
+   		<li>{{dish['description']}}</li>
+   		{% for praise in dish['praise'] %}
+   		<li><a href="/friends/{{praise}}">{{praise}}</a></li>
+   		{% end %}
+   		{% end %}
+   	</ul>
+   </div>
+   </body>
+ </html>
