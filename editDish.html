@@ -1,0 +1,39 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+　　<![endif]-->
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <body>
+   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+   	<script type="text/javascript">
+			function toReturn(){
+				window.location.href='/manager'; 
+			}
+			function toSubmit(obj){
+				var ada = {};
+				ada['id']='{{Id}}';
+				ada['name']=$('#name').val();
+				ada['description']=$('#description').val();
+				ada['submit']='True';
+				$.post("/editDish/{{Id}}",ada,function(data,status){
+					window.location.href="/manager";
+				});	
+			}
+	</script>
+   <div>{{state}}</div>
+     <ul>
+     		{% if Id == 'new'%}
+     		<li>菜名<input type="text" name="name" id='name' value="{{name}}"></li>
+     		{% else %}
+         <li>菜名<input type="text" name="name" id='name' value="{{name}}" readOnly="true"></li>
+         {% end %}
+         <li>描述<textarea rows="3" cols="20" id='description'>{{description}}</textarea></li>
+         <li><input type="button" value="submit" onclick="toSubmit();">
+         <input type="button" value="return" id='return' onclick="toReturn();"></li>
+     </ul>
+   </body>
+ </html>
